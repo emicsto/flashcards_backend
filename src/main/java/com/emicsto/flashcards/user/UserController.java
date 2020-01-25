@@ -19,4 +19,10 @@ public class UserController {
     public ResponseEntity<TokenPair> signIn(@RequestBody IdTokenDto idToken) {
         return ResponseEntity.ok(userApi.signIn(idToken));
     }
+
+    //TODO: implement
+    @PostMapping("/auth/token/refresh")
+    public ResponseEntity<TokenPair> refresh() {
+        return null;
+    }
 }
