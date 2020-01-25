@@ -1,4 +1,4 @@
-package com.emicsto.flashcards.user;
+package com.emicsto.flashcards.security;
 
 import lombok.Getter;
 import lombok.Setter;

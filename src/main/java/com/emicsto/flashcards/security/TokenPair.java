@@ -1,10 +1,10 @@
-package com.emicsto.flashcards.user;
+package com.emicsto.flashcards.security;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
 
 @Getter
-class TokenPair {
+public class TokenPair {
     @JsonProperty("access_token")
     private final String accessToken;
 
