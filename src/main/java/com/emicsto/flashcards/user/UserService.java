@@ -19,11 +19,12 @@ import java.util.Optional;
 @RequiredArgsConstructor
 class UserService {
     private final UserRepository userRepository;
+    private final TokenProvider tokenProvider;
 
     @Value("${oauth.google.client-id}")
     private String clientId;
 
-    void signIn(IdTokenDto idToken) {
+    TokenPair signIn(IdTokenDto idToken) {
         UserDto userDto = getUserPayload(idToken);
         Optional<User> existingUser = userRepository.findByEmail(userDto.getEmail());
         User user;
@@ -34,11 +35,13 @@ class UserService {
             user = existingUser.get();
         }
 
-        loginUser(user);
+        return loginUser(user);
     }
 
-    private void loginUser(User user) {
-        // TODO: implement
+    TokenPair loginUser(User user) {
+        String accessToken = tokenProvider.createAccessToken(user.getEmail());
+        String refreshToken = tokenProvider.createRefreshToken(user);
+        return new TokenPair(accessToken, refreshToken);
     }
 
     private User registerUser(UserDto userDto) {
