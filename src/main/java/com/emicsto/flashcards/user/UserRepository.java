@@ -2,6 +2,8 @@ package com.emicsto.flashcards.user;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
-interface UserRepository extends JpaRepository<User, Long> {
+import java.util.Optional;
 
+interface UserRepository extends JpaRepository<User, Long> {
+    Optional<User> findByEmail(String email);
 }
