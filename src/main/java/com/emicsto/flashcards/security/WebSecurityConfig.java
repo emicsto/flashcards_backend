@@ -13,6 +13,8 @@ import org.springframework.security.web.authentication.www.BasicAuthenticationFi
 @RequiredArgsConstructor
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
+    public static final String SIGN_IN_PATH = "/api/auth/token/sign-in";
+    public static final String REFRESH_TOKEN_PATH = "/api/auth/token/refresh";
     private final JWTAuthorizationFilter jwtAuthorizationFilter;
 
     @Override
@@ -21,7 +23,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http.csrf().disable();
         http.addFilterAfter(jwtAuthorizationFilter, BasicAuthenticationFilter.class);
         http.authorizeRequests()
-                .antMatchers("/api/auth/token/sign-in", "/api/auth/token/refresh").permitAll()
+                .antMatchers(SIGN_IN_PATH, REFRESH_TOKEN_PATH).permitAll()
                 .anyRequest().authenticated();
 
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);

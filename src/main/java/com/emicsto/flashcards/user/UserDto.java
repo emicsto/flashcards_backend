@@ -1,12 +1,12 @@
 package com.emicsto.flashcards.user;
 
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 @Builder
 @Getter
 @Setter
+@AllArgsConstructor
+@NoArgsConstructor
 class UserDto {
     private String email;
     private String name;

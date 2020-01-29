@@ -1,9 +1,6 @@
 package com.emicsto.flashcards.user;
 
-import com.emicsto.flashcards.security.IdTokenDto;
-import com.emicsto.flashcards.security.InvalidTokenException;
-import com.emicsto.flashcards.security.TokenPair;
-import com.emicsto.flashcards.security.TokenProvider;
+import com.emicsto.flashcards.security.*;
 import com.emicsto.flashcards.utils.ObjectMapperUtils;
 import com.google.api.client.googleapis.auth.oauth2.GoogleIdToken;
 import com.google.api.client.googleapis.auth.oauth2.GoogleIdTokenVerifier;
@@ -24,6 +21,7 @@ import java.util.Optional;
 class UserService {
     private final UserRepository userRepository;
     private final TokenProvider tokenProvider;
+    private final UserRefreshTokenRepository userRefreshTokenRepository;
 
     @Value("${oauth.google.client-id}")
     private String clientId;
@@ -68,13 +66,20 @@ class UserService {
         if (googleIdToken != null) {
             GoogleIdToken.Payload payload = googleIdToken.getPayload();
 
-             return UserDto.builder()
-                     .email(payload.getEmail())
-                     .name((String) payload.get("name"))
-                     .pictureUrl((String) payload.get("picture"))
-                     .build();
+            return UserDto.builder()
+                    .email(payload.getEmail())
+                    .name((String) payload.get("name"))
+                    .pictureUrl((String) payload.get("picture"))
+                    .build();
         } else {
             throw new InvalidTokenException();
         }
+    }
+
+    AccessToken refreshToken(String refreshToken) {
+        return userRefreshTokenRepository.findByToken(refreshToken)
+                .map(userRefreshToken ->
+                        new AccessToken(tokenProvider.createAccessToken(userRefreshToken.getUser().getEmail())))
+                .orElseThrow(InvalidTokenException::new);
     }
 }
