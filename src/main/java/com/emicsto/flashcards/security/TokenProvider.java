@@ -2,6 +2,7 @@ package com.emicsto.flashcards.security;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
+import com.auth0.jwt.exceptions.TokenExpiredException;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import com.emicsto.flashcards.user.User;
 import com.emicsto.flashcards.user.UserRefreshToken;
@@ -43,9 +44,13 @@ public class TokenProvider {
     }
 
     DecodedJWT getDecodedToken(String token) {
-        return JWT.require(Algorithm.HMAC256(secret.getBytes()))
-                .build()
-                .verify(token.replace(TOKEN_PREFIX, ""));
+        try {
+            return JWT.require(Algorithm.HMAC256(secret.getBytes()))
+                    .build()
+                    .verify(token.replace(TOKEN_PREFIX, ""));
+        } catch (TokenExpiredException ex) {
+            throw new InvalidTokenException();
+        }
     }
 
 }

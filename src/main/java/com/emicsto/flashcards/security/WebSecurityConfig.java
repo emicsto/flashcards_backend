@@ -12,10 +12,10 @@ import org.springframework.security.web.authentication.www.BasicAuthenticationFi
 @EnableWebSecurity
 @RequiredArgsConstructor
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
+    private final JWTAuthorizationFilter jwtAuthorizationFilter;
 
     public static final String SIGN_IN_PATH = "/api/auth/token/sign-in";
     public static final String REFRESH_TOKEN_PATH = "/api/auth/token/refresh";
-    private final JWTAuthorizationFilter jwtAuthorizationFilter;
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {

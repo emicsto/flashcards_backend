@@ -3,6 +3,7 @@ package com.emicsto.flashcards.security;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import com.emicsto.flashcards.user.CustomUserDetailsService;
 import lombok.RequiredArgsConstructor;
+import org.apache.http.HttpStatus;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -33,7 +34,13 @@ public class JWTAuthorizationFilter extends GenericFilterBean {
         String token = httpRequest.getHeader(HEADER_STRING);
 
         if (token != null) {
-            SecurityContextHolder.getContext().setAuthentication(getAuthentication(token));
+            try {
+                Authentication authentication = getAuthentication(token);
+                SecurityContextHolder.getContext().setAuthentication(authentication);
+            } catch (InvalidTokenException ex) {
+                httpResponse.setStatus(HttpStatus.SC_UNAUTHORIZED);
+                return;
+            }
         }
 
         chain.doFilter(httpRequest, httpResponse);
