@@ -20,4 +20,7 @@ public class UserRefreshToken {
         this.token = token;
         this.user = user;
     }
+
+    public UserRefreshToken() {
+    }
 }
