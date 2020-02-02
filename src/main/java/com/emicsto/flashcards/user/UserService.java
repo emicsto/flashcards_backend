@@ -68,6 +68,7 @@ class UserService {
 
             return UserDto.builder()
                     .email(payload.getEmail())
+                    .sub(payload.getSubject())
                     .name((String) payload.get("name"))
                     .pictureUrl((String) payload.get("picture"))
                     .build();

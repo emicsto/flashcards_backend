@@ -1,5 +1,6 @@
 package com.emicsto.flashcards.user;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 @Builder
@@ -11,4 +12,6 @@ class UserDto {
     private String email;
     private String name;
     private String pictureUrl;
+    @JsonIgnore
+    private String sub;
 }

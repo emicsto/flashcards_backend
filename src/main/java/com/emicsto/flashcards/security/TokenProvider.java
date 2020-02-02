@@ -17,6 +17,7 @@ import java.util.Date;
 @Component
 @RequiredArgsConstructor
 public class TokenProvider {
+    public static final int ONE_MINUTE = 60000;
     private final UserRefreshTokenRepository userRefreshTokenRepository;
 
     private static final String TOKEN_PREFIX = "Bearer ";
@@ -24,8 +25,8 @@ public class TokenProvider {
     @Value("${jwt.encryption.secret}")
     private String secret;
 
-    @Value("${jwt.access.token.expiration.seconds}")
-    private long expirationTimeInSeconds;
+    @Value("${jwt.access.token.expiration.minutes}")
+    private long expirationTimeInMinutes;
 
 
     public String createAccessToken(String email) {
@@ -33,7 +34,7 @@ public class TokenProvider {
                 .withSubject(email)
                 .withIssuedAt(new Date())
                 //TODO: Reduce expiration time
-                .withExpiresAt(new Date(System.currentTimeMillis() + expirationTimeInSeconds * 200))
+                .withExpiresAt(new Date(System.currentTimeMillis() + expirationTimeInMinutes * ONE_MINUTE))
                 .sign(Algorithm.HMAC256(secret.getBytes()));
     }
 

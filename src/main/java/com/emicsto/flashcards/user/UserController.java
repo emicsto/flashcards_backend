@@ -25,7 +25,7 @@ public class UserController {
     }
 
     @GetMapping("/auth/me")
-    public ResponseEntity<UserDto> tokenGetMe(Principal principal) {
+    public ResponseEntity<UserDto> getMe(Principal principal) {
         User user = (User) ((UsernamePasswordAuthenticationToken) principal).getPrincipal();
         return ResponseEntity.ok(ObjectMapperUtils.map(user, UserDto.class));
     }
