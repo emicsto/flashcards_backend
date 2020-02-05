@@ -1,6 +1,7 @@
 package me.emicsto.flashcards.user;
 
 import lombok.*;
+import me.emicsto.flashcards.deck.Deck;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -8,6 +9,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import javax.persistence.*;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.List;
 
 
 @Getter
@@ -25,6 +27,9 @@ public class User implements UserDetails {
     private String email;
     private String name;
     private String pictureUrl;
+
+    @OneToMany(mappedBy="user")
+    private List<Deck> decks;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

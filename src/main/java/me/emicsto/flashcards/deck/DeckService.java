@@ -1,7 +1,8 @@
 package me.emicsto.flashcards.deck;
 
-import me.emicsto.flashcards.utils.ObjectMapperUtils;
 import lombok.AllArgsConstructor;
+import me.emicsto.flashcards.user.User;
+import me.emicsto.flashcards.utils.ObjectMapperUtils;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -11,7 +12,7 @@ import java.util.List;
 class DeckService {
     private final DeckRepository deckRepository;
 
-    List<DeckDto> findAll() {
-        return ObjectMapperUtils.mapAll(deckRepository.findAll(), DeckDto.class);
+    List<DeckDto> findAllByUser(User user) {
+        return ObjectMapperUtils.mapAll(deckRepository.findAllByUser(user), DeckDto.class);
     }
 }

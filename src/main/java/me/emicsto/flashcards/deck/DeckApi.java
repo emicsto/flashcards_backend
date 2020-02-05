@@ -1,7 +1,8 @@
 package me.emicsto.flashcards.deck;
 
-import me.emicsto.flashcards.infrastructure.ModuleApi;
 import lombok.AllArgsConstructor;
+import me.emicsto.flashcards.infrastructure.ModuleApi;
+import me.emicsto.flashcards.user.User;
 
 import java.util.List;
 
@@ -10,7 +11,7 @@ import java.util.List;
 public class DeckApi {
     private final DeckService deckService;
 
-    public List<DeckDto> findAll() {
-        return deckService.findAll();
+    public List<DeckDto> findAllByUser(User user) {
+        return deckService.findAllByUser(user);
     }
 }

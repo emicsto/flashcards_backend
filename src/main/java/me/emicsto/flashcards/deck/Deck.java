@@ -1,6 +1,9 @@
 package me.emicsto.flashcards.deck;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import me.emicsto.flashcards.user.User;
 
 import javax.persistence.*;
 
@@ -9,10 +12,14 @@ import javax.persistence.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "decks")
-class Deck {
+public class Deck {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
     private Integer quantity;
+
+    @ManyToOne
+    @JoinColumn(name="user_id")
+    private User user;
 }
