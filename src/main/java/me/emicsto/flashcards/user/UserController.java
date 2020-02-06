@@ -16,7 +16,7 @@ import java.security.Principal;
 @RestController
 @RequestMapping("/api")
 @AllArgsConstructor
-public class UserController {
+class UserController {
     private final UserApi userApi;
 
     @PostMapping("/auth/token/sign-in")
