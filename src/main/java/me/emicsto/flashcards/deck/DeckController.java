@@ -12,7 +12,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/decks")
 @AllArgsConstructor
-public class DeckController {
+class DeckController {
     private final DeckApi deckApi;
 
     @GetMapping

@@ -7,4 +7,5 @@ import java.util.List;
 
 interface FlashcardRepository extends JpaRepository<Flashcard, Long> {
     List<Flashcard> findAllByUser(User user);
+    List<Flashcard> findAllByDeckIdAndUser(Long deckId, User user);
 }

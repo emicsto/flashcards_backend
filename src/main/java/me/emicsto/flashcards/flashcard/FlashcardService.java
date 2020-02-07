@@ -15,4 +15,8 @@ class FlashcardService {
     List<FlashcardDto> findAllByUser(User user) {
         return ObjectMapperUtils.mapAll(flashcardRepository.findAllByUser(user), FlashcardDto.class);
     }
+
+    public List<FlashcardDto> findAllByDeckIdAndUser(Long id, User user) {
+        return ObjectMapperUtils.mapAll(flashcardRepository.findAllByDeckIdAndUser(id, user), FlashcardDto.class);
+    }
 }

@@ -14,4 +14,8 @@ public class FlashcardApi {
     public List<FlashcardDto> findAllByUser(User user) {
         return flashcardService.findAllByUser(user);
     }
+
+    public List<FlashcardDto> findAllByDeckIdAndUser(Long id, User user) {
+        return flashcardService.findAllByDeckIdAndUser(id, user);
+    }
 }
