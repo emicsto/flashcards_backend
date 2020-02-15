@@ -2,6 +2,7 @@ package me.emicsto.flashcards.flashcard;
 
 import lombok.AllArgsConstructor;
 import me.emicsto.flashcards.security.SecurityUtils;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,9 +19,9 @@ class FlashcardController {
         return ResponseEntity.ok(flashcardApi.findAllByUser(SecurityUtils.getCurrentUser()));
     }
 
-    @GetMapping("/decks/{id}/flashcards")
-    public ResponseEntity<List<FlashcardDto>> findAllById(@PathVariable Long id) {
-        return ResponseEntity.ok(flashcardApi.findAllByDeckIdAndUser(id, SecurityUtils.getCurrentUser()));
+    @GetMapping("/decks/{deckId}/flashcards")
+    public ResponseEntity<List<FlashcardDto>> findAllByDeckId(@PathVariable Long deckId, Pageable pageable) {
+        return ResponseEntity.ok(flashcardApi.findAllByDeckIdAndUser(deckId, SecurityUtils.getCurrentUser(), pageable));
     }
 
     @PostMapping("/decks/{deckId}/flashcards/import")

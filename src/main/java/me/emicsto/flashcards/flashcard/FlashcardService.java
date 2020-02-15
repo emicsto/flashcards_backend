@@ -11,6 +11,7 @@ import me.emicsto.flashcards.user.User;
 import me.emicsto.flashcards.utils.ObjectMapperUtils;
 import org.springframework.stereotype.Service;
 
+import org.springframework.data.domain.Pageable;
 import java.io.StringReader;
 import java.util.List;
 
@@ -24,18 +25,18 @@ class FlashcardService {
         return ObjectMapperUtils.mapAll(flashcardRepository.findAllByUser(user), FlashcardDto.class);
     }
 
-    public List<FlashcardDto> findAllByDeckIdAndUser(Long id, User user) {
-        return ObjectMapperUtils.mapAll(flashcardRepository.findAllByDeckIdAndUser(id, user), FlashcardDto.class);
+    List<FlashcardDto> findAllByDeckIdAndUser(Long id, User user, Pageable pageable) {
+        return ObjectMapperUtils.mapAll(flashcardRepository.findAllByDeckIdAndUser(id, user, pageable), FlashcardDto.class);
     }
 
-    public void importFlashcards(Long deckId, String flashcardsCsv) {
+    void importFlashcards(Long deckId, String flashcardsCsv) {
         CSVReader reader = new CSVReaderBuilder(new StringReader(flashcardsCsv)).build();
-        List<Flashcard> flashcards =  new CsvToBeanBuilder(reader).withType(Flashcard.class).build().parse();
+        List<Flashcard> flashcards = new CsvToBeanBuilder(reader).withType(Flashcard.class).build().parse();
 
         Deck deck = deckApi.findById(deckId);
         User user = SecurityUtils.getCurrentUser();
 
-        for(Flashcard flashcard : flashcards) {
+        for (Flashcard flashcard : flashcards) {
             flashcard.setUser(user);
             flashcard.setDeck(deck);
             flashcardRepository.save(flashcard);

@@ -3,6 +3,7 @@ package me.emicsto.flashcards.flashcard;
 import lombok.AllArgsConstructor;
 import me.emicsto.flashcards.infrastructure.ModuleApi;
 import me.emicsto.flashcards.user.User;
+import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 
@@ -15,8 +16,8 @@ public class FlashcardApi {
         return flashcardService.findAllByUser(user);
     }
 
-    public List<FlashcardDto> findAllByDeckIdAndUser(Long id, User user) {
-        return flashcardService.findAllByDeckIdAndUser(id, user);
+    public List<FlashcardDto> findAllByDeckIdAndUser(Long id, User user, Pageable pageable) {
+        return flashcardService.findAllByDeckIdAndUser(id, user, pageable);
     }
 
     public void importFlashcards(Long deckId, String flashcards) {
