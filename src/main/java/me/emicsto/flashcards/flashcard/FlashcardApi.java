@@ -18,4 +18,8 @@ public class FlashcardApi {
     public List<FlashcardDto> findAllByDeckIdAndUser(Long id, User user) {
         return flashcardService.findAllByDeckIdAndUser(id, user);
     }
+
+    public void importFlashcards(Long deckId, String flashcards) {
+        flashcardService.importFlashcards(deckId, flashcards);
+    }
 }

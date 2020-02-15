@@ -5,6 +5,7 @@ import me.emicsto.flashcards.user.User;
 import me.emicsto.flashcards.utils.ObjectMapperUtils;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -14,5 +15,9 @@ class DeckService {
 
     List<DeckDto> findAllByUser(User user) {
         return ObjectMapperUtils.mapAll(deckRepository.findAllByUser(user), DeckDto.class);
+    }
+
+    public Deck findById(Long id) {
+        return deckRepository.findById(id).orElseThrow(DeckNotFoundException::new);
     }
 }

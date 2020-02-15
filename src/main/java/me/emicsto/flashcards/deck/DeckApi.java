@@ -14,4 +14,8 @@ public class DeckApi {
     public List<DeckDto> findAllByUser(User user) {
         return deckService.findAllByUser(user);
     }
+
+    public Deck findById(Long id) {
+        return deckService.findById(id);
+    }
 }

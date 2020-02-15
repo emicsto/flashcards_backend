@@ -3,10 +3,7 @@ package me.emicsto.flashcards.flashcard;
 import lombok.AllArgsConstructor;
 import me.emicsto.flashcards.security.SecurityUtils;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -24,5 +21,11 @@ class FlashcardController {
     @GetMapping("/decks/{id}/flashcards")
     public ResponseEntity<List<FlashcardDto>> findAllById(@PathVariable Long id) {
         return ResponseEntity.ok(flashcardApi.findAllByDeckIdAndUser(id, SecurityUtils.getCurrentUser()));
+    }
+
+    @PostMapping("/decks/{deckId}/flashcards/import")
+    public ResponseEntity<String> importFlashcards(@PathVariable Long deckId, @RequestBody FlashcardsCsv flashcards) {
+        flashcardApi.importFlashcards(deckId, flashcards.getFlashcards());
+        return ResponseEntity.ok("");
     }
 }
