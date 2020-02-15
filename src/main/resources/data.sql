@@ -10,11 +10,11 @@ VALUES (1, 1, 1, 'Front #1', 'Back #1'),
        (6, 2, 1, 'Front #6', 'Back #6'),
        (7, 2, 1, 'Front #7', 'Back #7');
 
-INSERT INTO decks (id, user_id, name, quantity)
-VALUES (1, 1, 'Deck #1', 10),
-       (2, 1, 'Deck #2', 20),
-       (3, 1, 'Deck #3', 30),
-       (4, 1, 'Deck #4', 40),
-       (5, 1, 'Deck #5', 50),
-       (6, 1, 'Deck #6', 330),
-       (7, 1, 'Deck #7', 21);
+INSERT INTO decks (id, user_id, name)
+VALUES (1, 1, 'Deck #1'),
+       (2, 1, 'Deck #2'),
+       (3, 1, 'Deck #3'),
+       (4, 1, 'Deck #4'),
+       (5, 1, 'Deck #5'),
+       (6, 1, 'Deck #6'),
+       (7, 1, 'Deck #7');

@@ -14,7 +14,17 @@ class DeckService {
     private final DeckRepository deckRepository;
 
     List<DeckDto> findAllByUser(User user) {
-        return ObjectMapperUtils.mapAll(deckRepository.findAllByUser(user), DeckDto.class);
+        List<Deck> decks = deckRepository.findAllByUser(user);
+        List<DeckDto> decksDto = new ArrayList<>();
+
+        for(Deck deck : decks) {
+            DeckDto deckDto = ObjectMapperUtils.map(deck, DeckDto.class);
+            //TODO optimize
+            deckDto.setQuantity(deck.getFlashcards().size());
+            decksDto.add(deckDto);
+        }
+
+        return decksDto;
     }
 
     public Deck findById(Long id) {
