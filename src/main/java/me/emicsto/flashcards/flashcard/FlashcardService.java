@@ -39,7 +39,8 @@ class FlashcardService {
         for (Flashcard flashcard : flashcards) {
             flashcard.setUser(user);
             flashcard.setDeck(deck);
-            flashcardRepository.save(flashcard);
         }
+
+        flashcardRepository.saveAll(flashcards);
     }
 }
