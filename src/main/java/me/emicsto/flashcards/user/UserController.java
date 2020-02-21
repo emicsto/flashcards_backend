@@ -1,11 +1,12 @@
 package me.emicsto.flashcards.user;
 
+import lombok.AllArgsConstructor;
 import me.emicsto.flashcards.security.AccessToken;
 import me.emicsto.flashcards.security.IdTokenDto;
 import me.emicsto.flashcards.security.RefreshToken;
 import me.emicsto.flashcards.security.TokenPair;
 import me.emicsto.flashcards.utils.ObjectMapperUtils;
-import lombok.AllArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.web.bind.annotation.*;
@@ -33,5 +34,11 @@ class UserController {
     @PostMapping("/auth/token/refresh")
     public ResponseEntity<AccessToken> refresh(@Valid @RequestBody RefreshToken refreshToken) {
         return ResponseEntity.ok(userApi.refreshAccessToken(refreshToken.getRefreshToken()));
+    }
+
+    @PostMapping("/auth/logout")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void logout(@Valid @RequestBody RefreshToken refreshToken) {
+        userApi.logout(refreshToken.getRefreshToken());
     }
 }

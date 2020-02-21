@@ -60,7 +60,7 @@ class UserService {
         try {
             googleIdToken = verifier.verify(idToken.getToken());
         } catch (GeneralSecurityException | IOException e) {
-            e.printStackTrace();
+            throw new InvalidTokenException();
         }
 
         if (googleIdToken != null) {
@@ -82,5 +82,10 @@ class UserService {
                 .map(userRefreshToken ->
                         new AccessToken(tokenProvider.createAccessToken(userRefreshToken.getUser().getEmail())))
                 .orElseThrow(InvalidTokenException::new);
+    }
+
+    void logout(String refreshToken) {
+        userRefreshTokenRepository.findByToken(refreshToken)
+                .ifPresent(userRefreshTokenRepository::delete);
     }
 }

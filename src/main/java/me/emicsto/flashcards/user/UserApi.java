@@ -18,4 +18,8 @@ public class UserApi {
     public AccessToken refreshAccessToken(String refreshToken) {
         return userService.refreshToken(refreshToken);
     }
+
+    public void logout(String refreshToken) {
+         userService.logout(refreshToken);
+    }
 }
