@@ -2,6 +2,7 @@ package me.emicsto.flashcards.deck;
 
 import me.emicsto.flashcards.user.User;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.security.access.prepost.PreAuthorize;
 
 import java.util.List;
 

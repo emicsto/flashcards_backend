@@ -18,4 +18,8 @@ public class DeckApi {
     public Deck findById(Long id) {
         return deckService.findById(id);
     }
+
+    public DeckDto save(DeckDto deck) {
+        return deckService.save(deck);
+    }
 }
