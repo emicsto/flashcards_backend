@@ -1,8 +1,8 @@
 package me.emicsto.flashcards.deck;
 
 import lombok.AllArgsConstructor;
-import me.emicsto.flashcards.security.SecurityUtils;
 import me.emicsto.flashcards.user.User;
+import me.emicsto.flashcards.user.UserRepository;
 import me.emicsto.flashcards.utils.ObjectMapperUtils;
 import org.springframework.stereotype.Service;
 
@@ -32,9 +32,9 @@ class DeckService {
         return deckRepository.findById(id).orElseThrow(DeckNotFoundException::new);
     }
 
-    DeckDto save(DeckDto deckDto) {
+    DeckDto save(DeckDto deckDto, User user) {
         Deck deck = ObjectMapperUtils.map(deckDto, Deck.class);
-        deck.setUser(SecurityUtils.getCurrentUser());
+        deck.setUser(user);
         return ObjectMapperUtils.map(deckRepository.save(deck), DeckDto.class);
     }
 }

@@ -21,6 +21,6 @@ class DeckController {
 
     @PostMapping
     public ResponseEntity<DeckDto> save(@Valid @RequestBody DeckDto deck) {
-        return ResponseEntity.ok(deckApi.save(deck));
+        return ResponseEntity.ok(deckApi.save(deck, SecurityUtils.getCurrentUser()));
     }
 }

@@ -19,7 +19,7 @@ public class DeckApi {
         return deckService.findById(id);
     }
 
-    public DeckDto save(DeckDto deck) {
-        return deckService.save(deck);
+    public DeckDto save(DeckDto deck, User user) {
+        return deckService.save(deck, user);
     }
 }
