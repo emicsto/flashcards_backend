@@ -5,26 +5,17 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import me.emicsto.flashcards.deck.Deck;
 import me.emicsto.flashcards.user.User;
+import org.springframework.data.annotation.Id;
 
-import javax.persistence.*;
 
-@Entity
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "flashcards")
 public class Flashcard {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private String id;
     private String front;
     private String back;
-
-    @ManyToOne
-    @JoinColumn(name="user_id")
     private User user;
-
-    @ManyToOne
-    @JoinColumn(name="deck_id")
     private Deck deck;
 }

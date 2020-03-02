@@ -8,7 +8,7 @@ import javax.validation.constraints.NotEmpty;
 @Getter
 @Setter
 class DeckDto {
-    private Long id;
+    private String id;
     @NotEmpty
     private String name;
     private Integer quantity;

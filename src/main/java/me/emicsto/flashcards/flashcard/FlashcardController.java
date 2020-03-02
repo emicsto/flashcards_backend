@@ -20,12 +20,12 @@ class FlashcardController {
     }
 
     @GetMapping("/decks/{deckId}/flashcards")
-    public ResponseEntity<List<FlashcardDto>> findAllByDeckId(@PathVariable Long deckId, Pageable pageable) {
+    public ResponseEntity<List<FlashcardDto>> findAllByDeckId(@PathVariable String deckId, Pageable pageable) {
         return ResponseEntity.ok(flashcardApi.findAllByDeckIdAndUser(deckId, SecurityUtils.getCurrentUser(), pageable));
     }
 
     @PostMapping("/decks/{deckId}/flashcards/import")
-    public ResponseEntity<String> importFlashcards(@PathVariable Long deckId, @RequestBody FlashcardsCsv flashcards) {
+    public ResponseEntity<String> importFlashcards(@PathVariable String deckId, @RequestBody FlashcardsCsv flashcards) {
         flashcardApi.importFlashcards(deckId, flashcards.getFlashcards());
         return ResponseEntity.ok("");
     }

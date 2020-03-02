@@ -15,7 +15,7 @@ public class DeckApi {
         return deckService.findAllByUser(user);
     }
 
-    public Deck findById(Long id) {
+    public Deck findById(String id) {
         return deckService.findById(id);
     }
 

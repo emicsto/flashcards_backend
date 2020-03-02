@@ -2,7 +2,6 @@ package me.emicsto.flashcards.deck;
 
 import lombok.AllArgsConstructor;
 import me.emicsto.flashcards.user.User;
-import me.emicsto.flashcards.user.UserRepository;
 import me.emicsto.flashcards.utils.ObjectMapperUtils;
 import org.springframework.stereotype.Service;
 
@@ -28,7 +27,7 @@ class DeckService {
         return decksDto;
     }
 
-    Deck findById(Long id) {
+    Deck findById(String id) {
         return deckRepository.findById(id).orElseThrow(DeckNotFoundException::new);
     }
 

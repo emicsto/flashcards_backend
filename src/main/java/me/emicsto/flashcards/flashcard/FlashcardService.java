@@ -25,11 +25,11 @@ class FlashcardService {
         return ObjectMapperUtils.mapAll(flashcardRepository.findAllByUser(user), FlashcardDto.class);
     }
 
-    List<FlashcardDto> findAllByDeckIdAndUser(Long id, User user, Pageable pageable) {
+    List<FlashcardDto> findAllByDeckIdAndUser(String id, User user, Pageable pageable) {
         return ObjectMapperUtils.mapAll(flashcardRepository.findAllByDeckIdAndUser(id, user, pageable), FlashcardDto.class);
     }
 
-    void importFlashcards(Long deckId, String flashcardsCsv) {
+    void importFlashcards(String deckId, String flashcardsCsv) {
         CSVReader reader = new CSVReaderBuilder(new StringReader(flashcardsCsv)).build();
         List<Flashcard> flashcards = new CsvToBeanBuilder(reader).withType(Flashcard.class).build().parse();
 

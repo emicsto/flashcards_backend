@@ -16,11 +16,11 @@ public class FlashcardApi {
         return flashcardService.findAllByUser(user);
     }
 
-    public List<FlashcardDto> findAllByDeckIdAndUser(Long id, User user, Pageable pageable) {
+    public List<FlashcardDto> findAllByDeckIdAndUser(String id, User user, Pageable pageable) {
         return flashcardService.findAllByDeckIdAndUser(id, user, pageable);
     }
 
-    public void importFlashcards(Long deckId, String flashcards) {
+    public void importFlashcards(String deckId, String flashcards) {
         flashcardService.importFlashcards(deckId, flashcards);
     }
 }

@@ -1,19 +1,15 @@
 package me.emicsto.flashcards.user;
 
-import lombok.*;
-
-import javax.persistence.*;
+import lombok.Data;
+import org.springframework.data.annotation.Id;
 
 @Data
-@Entity
 public class UserRefreshToken {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private String id;
 
     private String token;
 
-    @ManyToOne(fetch = FetchType.LAZY)
     private User user;
 
     public UserRefreshToken(String token, User user) {

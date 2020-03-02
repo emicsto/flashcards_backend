@@ -6,7 +6,7 @@ import lombok.Setter;
 @Getter
 @Setter
 class FlashcardDto {
-    private Long id;
+    private String id;
     private String front;
     private String back;
 }

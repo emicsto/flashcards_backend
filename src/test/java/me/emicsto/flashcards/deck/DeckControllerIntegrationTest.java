@@ -11,7 +11,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.web.servlet.MockMvc;
 import me.emicsto.flashcards.utils.WithMockCustomUser;
 
-import javax.transaction.Transactional;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -43,7 +42,6 @@ class DeckControllerIntegrationTest {
     }
 
     @Test
-    @Transactional
     void shouldSaveDeck() throws Exception {
         DeckDto deckDto = new DeckDto();
         deckDto.setName("deck");

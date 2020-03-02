@@ -1,11 +1,10 @@
 package me.emicsto.flashcards.deck;
 
 import me.emicsto.flashcards.user.User;
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.data.mongodb.repository.MongoRepository;
 
 import java.util.List;
 
-interface DeckRepository extends JpaRepository<Deck, Long> {
+interface DeckRepository extends MongoRepository<Deck, String> {
     List<Deck> findAllByUser(User user);
 }

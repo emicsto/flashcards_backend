@@ -1,5 +1,5 @@
 INSERT INTO users (id, email, name)
-VALUES (1, 'invoices.mail.app@gmail.com', 'user');
+VALUES ('1', 'invoices.mail.app@gmail.com', 'user');
 
 INSERT INTO flashcards (id, deck_id, user_id, front, back)
 VALUES (1, 1, 1, 'Front #1', 'Back #1'),
