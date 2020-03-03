@@ -33,6 +33,10 @@ class DeckService {
 
     DeckDto save(DeckDto deckDto, User user) {
         Deck deck = ObjectMapperUtils.map(deckDto, Deck.class);
+        return save(deck, user);
+    }
+
+    DeckDto save(Deck deck, User user) {
         deck.setUser(user);
         return ObjectMapperUtils.map(deckRepository.save(deck), DeckDto.class);
     }

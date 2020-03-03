@@ -42,5 +42,8 @@ class FlashcardService {
         }
 
         flashcardRepository.saveAll(flashcards);
+
+        deck.setFlashcards(flashcards);
+        deckApi.save(deck, user);
     }
 }

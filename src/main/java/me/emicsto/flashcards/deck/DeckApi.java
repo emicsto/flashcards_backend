@@ -22,4 +22,8 @@ public class DeckApi {
     public DeckDto save(DeckDto deck, User user) {
         return deckService.save(deck, user);
     }
+
+    public DeckDto save(Deck deck, User user) {
+        return deckService.save(deck, user);
+    }
 }
