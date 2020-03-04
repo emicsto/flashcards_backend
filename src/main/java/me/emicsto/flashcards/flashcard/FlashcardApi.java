@@ -23,4 +23,8 @@ public class FlashcardApi {
     public void importFlashcards(String deckId, String flashcards) {
         flashcardService.importFlashcards(deckId, flashcards);
     }
+
+    public FlashcardDto save(FlashcardDto flashcardDto, User currentUser) {
+        return flashcardService.save(flashcardDto, currentUser);
+    }
 }

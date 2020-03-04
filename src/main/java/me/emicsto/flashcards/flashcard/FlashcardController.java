@@ -6,6 +6,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -22,6 +23,11 @@ class FlashcardController {
     @GetMapping("/decks/{deckId}/flashcards")
     public ResponseEntity<List<FlashcardDto>> findAllByDeckId(@PathVariable String deckId, Pageable pageable) {
         return ResponseEntity.ok(flashcardApi.findAllByDeckIdAndUser(deckId, SecurityUtils.getCurrentUser(), pageable));
+    }
+
+    @PostMapping("/flashcards")
+    public ResponseEntity<FlashcardDto> save(@Valid @RequestBody FlashcardDto flashcard) {
+        return ResponseEntity.ok(flashcardApi.save(flashcard, SecurityUtils.getCurrentUser()));
     }
 
     @PostMapping("/decks/{deckId}/flashcards/import")

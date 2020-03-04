@@ -1,6 +1,9 @@
 package me.emicsto.flashcards.deck;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import me.emicsto.flashcards.flashcard.Flashcard;
+import me.emicsto.flashcards.flashcard.FlashcardDto;
+import me.emicsto.flashcards.flashcard.FlashcardRepository;
 import me.emicsto.flashcards.user.User;
 import me.emicsto.flashcards.user.UserRepository;
 import me.emicsto.flashcards.utils.WithMockCustomUser;
@@ -20,53 +23,58 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 @AutoConfigureMockMvc
 @WithMockCustomUser
-class DeckControllerIntegrationTest {
+class FlashcardControllerIntegrationTest {
 
     @Autowired
     private MockMvc mockMvc;
 
     @Autowired
-    private DeckRepository deckRepository;
+    private FlashcardRepository flashcardRepository;
 
     @Autowired
     private UserRepository userRepository;
 
     @Autowired
+    private DeckRepository deckRepository;
+
+    @Autowired
     private ObjectMapper objectMapper;
+
+    User user = new User();
 
     @BeforeEach
     void setUp() {
-        deckRepository.deleteAll();;
+        flashcardRepository.deleteAll();;
         userRepository.deleteAll();;
 
-        User user = new User();
         user.setName("username");
         userRepository.save(user);
     }
 
     @Test
-    void shouldSaveDeck() throws Exception {
-        DeckDto deckDto = new DeckDto();
-        deckDto.setName("deck");
+    void shouldSaveFlashcard() throws Exception {
+        Deck deck = new Deck();
+        deck.setUser(user);
+        deck.setName("deck");
+        deck.setId("1");
+        deckRepository.save(deck);
 
-        mockMvc.perform(post("/api/decks")
+        FlashcardDto flashcardDto = new FlashcardDto();
+        flashcardDto.setFront("front");
+        flashcardDto.setBack("back");
+        flashcardDto.setDeckId("1");
+
+        mockMvc.perform(post("/api/flashcards")
                 .contentType("application/json")
-                .content(objectMapper.writeValueAsString(deckDto)))
+                .content(objectMapper.writeValueAsString(flashcardDto)))
                 .andExpect(status().isOk());
 
-        List<Deck> decks = deckRepository.findAll();
+        List<Flashcard> flashcards = flashcardRepository.findAll();
 
-        assertThat(decks).hasSize(1);
-        assertThat(decks.get(0).getName()).isEqualTo("deck");
-    }
-
-    @Test
-    void shouldReturnBadRequest_whenDeckWithEmptyNameIsPassedToSave() throws Exception {
-        DeckDto deckDto = new DeckDto();
-
-        mockMvc.perform(post("/api/decks")
-                .contentType("application/json")
-                .content(objectMapper.writeValueAsString(deckDto)))
-                .andExpect(status().isBadRequest());
+        assertThat(flashcards).hasSize(1);
+        assertThat(flashcards.get(0).getFront()).isEqualTo("front");
+        assertThat(flashcards.get(0).getBack()).isEqualTo("back");
+        assertThat(flashcards.get(0).getDeck().getId()).isEqualTo("1");
+        assertThat(flashcards.get(0).getDeck().getName()).isEqualTo("deck");
     }
 }

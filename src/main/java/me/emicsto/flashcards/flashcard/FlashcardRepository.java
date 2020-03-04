@@ -7,7 +7,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 
 import java.util.List;
 
-interface FlashcardRepository extends MongoRepository<Flashcard, String> {
+public interface FlashcardRepository extends MongoRepository<Flashcard, String> {
     @PreAuthorize("#user.id == authentication.principal.id")
     List<Flashcard> findAllByUser(User user);
 
