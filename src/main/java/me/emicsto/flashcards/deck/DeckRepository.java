@@ -5,6 +5,6 @@ import org.springframework.data.mongodb.repository.MongoRepository;
 
 import java.util.List;
 
-interface DeckRepository extends MongoRepository<Deck, String> {
+public interface DeckRepository extends MongoRepository<Deck, String> {
     List<Deck> findAllByUser(User user);
 }

@@ -4,11 +4,13 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import me.emicsto.flashcards.user.User;
 import me.emicsto.flashcards.user.UserRepository;
 import me.emicsto.flashcards.utils.WithMockCustomUser;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.List;
@@ -34,14 +36,23 @@ class DeckControllerIntegrationTest {
     @Autowired
     private ObjectMapper objectMapper;
 
+    @Autowired
+    private MongoTemplate mongoTemplate;
+
     @BeforeEach
     void setUp() {
-        deckRepository.deleteAll();;
-        userRepository.deleteAll();;
+        mongoTemplate.dropCollection(Deck.class);
+        mongoTemplate.dropCollection(User.class);
 
         User user = new User();
-        user.setName("username");
+        user.setName("mame");
         userRepository.save(user);
+    }
+
+    @AfterEach
+    public void tearDown() {
+        mongoTemplate.dropCollection(Deck.class);
+        mongoTemplate.dropCollection(User.class);
     }
 
     @Test

@@ -1,6 +1,7 @@
 package me.emicsto.flashcards.deck;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import me.emicsto.flashcards.flashcard.Flashcard;
@@ -14,6 +15,7 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 public class Deck {
     @Id
     private String id;
