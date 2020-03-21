@@ -50,7 +50,7 @@ class FlashcardService {
 
         flashcardRepository.saveAll(flashcards);
 
-        deck.setFlashcards(flashcards);
+        deck.getFlashcards().addAll(flashcards);
         deckApi.save(deck, user);
     }
 }
