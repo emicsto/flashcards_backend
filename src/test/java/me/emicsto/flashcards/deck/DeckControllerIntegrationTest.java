@@ -16,6 +16,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -39,12 +40,14 @@ class DeckControllerIntegrationTest {
     @Autowired
     private MongoTemplate mongoTemplate;
 
+    private User user;
+
     @BeforeEach
     void setUp() {
         mongoTemplate.dropCollection(Deck.class);
         mongoTemplate.dropCollection(User.class);
 
-        User user = new User();
+        user = new User();
         user.setName("mame");
         userRepository.save(user);
     }
@@ -79,5 +82,22 @@ class DeckControllerIntegrationTest {
                 .contentType("application/json")
                 .content(objectMapper.writeValueAsString(deckDto)))
                 .andExpect(status().isBadRequest());
+    }
+
+
+    @Test
+    void shouldDeleteDeck() throws Exception {
+        Deck deck = new Deck();
+        deck.setName("test_deck");
+        deck.setUser(user);
+        Deck savedDeck = deckRepository.save(deck);
+
+        mockMvc.perform(delete("/api/decks/" + savedDeck.getId())
+                .contentType("application/json"))
+                .andExpect(status().isOk());
+
+        List<Deck> decks = deckRepository.findAll();
+
+        assertThat(decks).hasSize(0);
     }
 }

@@ -59,7 +59,7 @@ class UserService {
 
         try {
             googleIdToken = verifier.verify(idToken.getToken());
-        } catch (GeneralSecurityException | IOException e) {
+        } catch (GeneralSecurityException | IOException | NullPointerException e) {
             throw new InvalidTokenException();
         }
 

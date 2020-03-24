@@ -40,4 +40,9 @@ class DeckService {
         deck.setUser(user);
         return ObjectMapperUtils.map(deckRepository.save(deck), DeckDto.class);
     }
+
+    void delete(String id) {
+        Deck deck = findById(id);
+        deckRepository.delete(deck);
+    }
 }

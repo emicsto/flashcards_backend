@@ -14,6 +14,7 @@ import java.util.List;
 
 @Getter
 @Setter
+@EqualsAndHashCode(exclude = {"decks"})
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder

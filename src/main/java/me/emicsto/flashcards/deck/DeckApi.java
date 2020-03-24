@@ -26,4 +26,8 @@ public class DeckApi {
     public DeckDto save(Deck deck, User user) {
         return deckService.save(deck, user);
     }
+
+    public void delete(String id) {
+        deckService.delete(id);
+    }
 }
