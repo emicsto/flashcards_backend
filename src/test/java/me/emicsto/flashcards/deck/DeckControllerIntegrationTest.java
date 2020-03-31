@@ -49,6 +49,7 @@ class DeckControllerIntegrationTest {
 
         user = new User();
         user.setName("mame");
+        user.setId("1");
         userRepository.save(user);
     }
 
@@ -99,5 +100,17 @@ class DeckControllerIntegrationTest {
         List<Deck> decks = deckRepository.findAll();
 
         assertThat(decks).hasSize(0);
+    }
+
+    @Test
+    void deleteDeckAttempt_shouldReturnAccessDenied() throws Exception {
+        Deck deck = new Deck();
+        deck.setName("test_deck");
+        deck.setUser(new User());
+        Deck savedDeck = deckRepository.save(deck);
+
+        mockMvc.perform(delete("/api/decks/" + savedDeck.getId())
+                .contentType("application/json"))
+                .andExpect(status().is(403));
     }
 }

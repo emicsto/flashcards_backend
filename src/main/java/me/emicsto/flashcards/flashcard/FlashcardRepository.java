@@ -13,4 +13,8 @@ public interface FlashcardRepository extends MongoRepository<Flashcard, String> 
 
     @PreAuthorize("#user.id == authentication.principal.id")
     List<Flashcard> findAllByDeckIdAndUser(String deckId, User user, Pageable pageable);
+
+    @Override
+    @PreAuthorize("#flashcard.deck.user.id == authentication.principal.id")
+    <S extends Flashcard> S save(S flashcard);
 }
