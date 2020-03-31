@@ -1,3 +1,1 @@
-web java $JAVA_OPTS -jar target/flashcards-0.0.1-SNAPSHOT.jar
---server.port=$PORT
---spring.data.mongodb.uri=$MONGODB_URL
+web java -Dserver.port=$PORT -Dspring.data.mongodb.uri=$MONGODB_URL $JAVA_OPTS -jar target/flashcards-0.0.1-SNAPSHOT.jar
