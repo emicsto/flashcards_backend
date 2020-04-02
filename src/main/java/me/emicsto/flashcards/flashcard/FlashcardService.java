@@ -31,9 +31,17 @@ class FlashcardService {
 
     FlashcardDto save(FlashcardDto flashcardDto, User user) {
         Flashcard flashcard = ObjectMapperUtils.map(flashcardDto, Flashcard.class);
+        Deck deck = deckApi.findById(flashcardDto.getDeckId());
+
         flashcard.setUser(user);
-        flashcard.setDeck(deckApi.findById(flashcardDto.getDeckId()));
-        return ObjectMapperUtils.map(flashcardRepository.save(flashcard), FlashcardDto.class);
+        flashcard.setDeck(deck);
+
+        Flashcard savedFlashcard = flashcardRepository.save(flashcard);
+
+        deck.getFlashcards().add(savedFlashcard);
+        deckApi.save(deck, user);
+
+        return ObjectMapperUtils.map(savedFlashcard, FlashcardDto.class);
     }
 
     void importFlashcards(String deckId, String flashcardsCsv) {
