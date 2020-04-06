@@ -27,4 +27,8 @@ public class FlashcardApi {
     public FlashcardDto save(FlashcardDto flashcardDto, User currentUser) {
         return flashcardService.save(flashcardDto, currentUser);
     }
+
+    public void delete(String id) {
+        flashcardService.delete(id);
+    }
 }

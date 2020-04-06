@@ -35,4 +35,10 @@ class FlashcardController {
         flashcardApi.importFlashcards(deckId, flashcards.getFlashcards());
         return ResponseEntity.ok("");
     }
+
+    @DeleteMapping("/flashcards/{id}")
+    public ResponseEntity<String> delete(@PathVariable String id) {
+        flashcardApi.delete(id);
+        return ResponseEntity.ok("");
+    }
 }

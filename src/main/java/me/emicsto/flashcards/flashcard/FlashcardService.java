@@ -9,9 +9,9 @@ import me.emicsto.flashcards.deck.DeckApi;
 import me.emicsto.flashcards.security.SecurityUtils;
 import me.emicsto.flashcards.user.User;
 import me.emicsto.flashcards.utils.ObjectMapperUtils;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import org.springframework.data.domain.Pageable;
 import java.io.StringReader;
 import java.util.List;
 
@@ -60,5 +60,14 @@ class FlashcardService {
 
         deck.getFlashcards().addAll(flashcards);
         deckApi.save(deck, user);
+    }
+
+    Flashcard findById(String id) {
+        return flashcardRepository.findById(id).orElseThrow(FlashcardNotFoundException::new);
+    }
+
+    void delete(String id) {
+        Flashcard flashcard = findById(id);
+        flashcardRepository.delete(flashcard);
     }
 }

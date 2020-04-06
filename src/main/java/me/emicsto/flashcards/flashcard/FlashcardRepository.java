@@ -17,4 +17,8 @@ public interface FlashcardRepository extends MongoRepository<Flashcard, String> 
     @Override
     @PreAuthorize("#flashcard.deck.user.id == authentication.principal.id")
     <S extends Flashcard> S save(S flashcard);
+
+    @Override
+    @PreAuthorize("#flashcard.deck.user.id == authentication.principal.id")
+    void delete(Flashcard flashcard);
 }
