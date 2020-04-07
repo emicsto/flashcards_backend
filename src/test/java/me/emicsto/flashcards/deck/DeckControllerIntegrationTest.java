@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import me.emicsto.flashcards.user.User;
 import me.emicsto.flashcards.user.UserRepository;
 import me.emicsto.flashcards.utils.WithMockCustomUser;
+import org.apache.http.HttpStatus;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -85,7 +86,6 @@ class DeckControllerIntegrationTest {
                 .andExpect(status().isBadRequest());
     }
 
-
     @Test
     void shouldDeleteDeck() throws Exception {
         Deck deck = new Deck();
@@ -103,7 +103,7 @@ class DeckControllerIntegrationTest {
     }
 
     @Test
-    void deleteDeckAttempt_shouldReturnAccessDenied() throws Exception {
+    void deleteSeomeonesDeckAttempt_shouldReturnForbidden() throws Exception {
         Deck deck = new Deck();
         deck.setName("test_deck");
         deck.setUser(new User());
@@ -111,6 +111,6 @@ class DeckControllerIntegrationTest {
 
         mockMvc.perform(delete("/api/decks/" + savedDeck.getId())
                 .contentType("application/json"))
-                .andExpect(status().is(403));
+                .andExpect(status().is(HttpStatus.SC_FORBIDDEN));
     }
 }
