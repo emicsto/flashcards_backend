@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.security.GeneralSecurityException;
-import java.util.Collections;
+import java.util.Arrays;
 import java.util.Optional;
 
 
@@ -23,8 +23,11 @@ class UserService {
     private final TokenProvider tokenProvider;
     private final UserRefreshTokenRepository userRefreshTokenRepository;
 
-    @Value("${oauth.google.client-id}")
-    private String clientId;
+    @Value("${oauth.google.client-id-web}")
+    private String clientIdWeb;
+
+    @Value("${oauth.google.client-id-mobile}")
+    private String clientIdMobile;
 
     TokenPair signIn(IdTokenDto idToken) {
         UserDto userDto = getUserPayload(idToken);
@@ -54,7 +57,7 @@ class UserService {
     private UserDto getUserPayload(IdTokenDto idToken) {
         GoogleIdToken googleIdToken = null;
         GoogleIdTokenVerifier verifier = new GoogleIdTokenVerifier.Builder(new NetHttpTransport(), JacksonFactory.getDefaultInstance())
-                .setAudience(Collections.singletonList(clientId))
+                .setAudience(Arrays.asList(clientIdMobile, clientIdWeb))
                 .build();
 
         try {
