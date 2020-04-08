@@ -1,13 +1,13 @@
 package me.emicsto.flashcards.user;
 
+import lombok.RequiredArgsConstructor;
 import me.emicsto.flashcards.infrastructure.ModuleApi;
 import me.emicsto.flashcards.security.AccessToken;
 import me.emicsto.flashcards.security.IdTokenDto;
 import me.emicsto.flashcards.security.TokenPair;
-import lombok.AllArgsConstructor;
 
 @ModuleApi
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class UserApi {
     private final UserService userService;
 
