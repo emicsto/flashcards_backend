@@ -50,7 +50,7 @@ public class TokenProvider {
                     .build()
                     .verify(token.replace(TOKEN_PREFIX, ""));
         } catch (TokenExpiredException ex) {
-            throw new InvalidTokenException();
+            throw new InvalidTokenException(ex.getMessage());
         }
     }
 
