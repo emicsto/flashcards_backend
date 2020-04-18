@@ -102,6 +102,47 @@ class FlashcardControllerIntegrationTest {
     }
 
     @Test
+    void shouldUpdateFlashcard() throws Exception {
+        Deck deck = Deck.builder()
+                .id("1")
+                .user(user)
+                .name("deck")
+                .build();
+
+        deckRepository.save(deck);
+
+        Flashcard flashcard = Flashcard.builder()
+                .front("front")
+                .back("back")
+                .user(user)
+                .deck(deck)
+                .build();
+
+        Flashcard savedFlashcard = flashcardRepository.save(flashcard);
+
+        FlashcardDto flashcardDto = FlashcardDto.builder()
+                .id(savedFlashcard.getId())
+                .deckId("1")
+                .front("front_updated")
+                .back("back_updated")
+                .build();
+
+        mockMvc.perform(put("/api/flashcards")
+                .contentType("application/json")
+                .content(objectMapper.writeValueAsString(flashcardDto)))
+                .andExpect(status().isOk());
+
+        List<Flashcard> flashcards = flashcardRepository.findAll();
+
+        assertThat(flashcards).hasSize(1);
+        assertThat(flashcards.get(0).getFront()).isEqualTo("front_updated");
+        assertThat(flashcards.get(0).getBack()).isEqualTo("back_updated");
+        assertThat(flashcards.get(0).getDeck().getId()).isEqualTo("1");
+        assertThat(flashcards.get(0).getDeck().getName()).isEqualTo("deck");
+        assertThat(flashcards.get(0).getUser().getName()).isEqualTo("name");
+    }
+
+    @Test
     void addFlashcardToSomeonesDeck_shouldReturnForbidden() throws Exception {
         Deck deck = Deck.builder()
                 .id("1")

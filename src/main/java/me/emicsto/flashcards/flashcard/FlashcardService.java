@@ -44,6 +44,14 @@ class FlashcardService {
         return ObjectMapperUtils.map(savedFlashcard, FlashcardDto.class);
     }
 
+
+    FlashcardDto update(FlashcardDto flashcardDto) {
+        Flashcard flashcard = findById(flashcardDto.getId());
+        flashcard.setFront(flashcardDto.getFront());
+        flashcard.setBack(flashcardDto.getBack());
+        return ObjectMapperUtils.map(flashcardRepository.save(flashcard), FlashcardDto.class);
+    }
+
     void importFlashcards(String deckId, String flashcardsCsv) {
         CSVReader reader = new CSVReaderBuilder(new StringReader(flashcardsCsv)).build();
         List<Flashcard> flashcards = new CsvToBeanBuilder(reader).withType(Flashcard.class).build().parse();

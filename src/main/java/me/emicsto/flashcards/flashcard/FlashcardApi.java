@@ -31,4 +31,8 @@ public class FlashcardApi {
     public void delete(String id) {
         flashcardService.delete(id);
     }
+
+    public FlashcardDto update(FlashcardDto flashcardDto) {
+        return flashcardService.update(flashcardDto);
+    }
 }

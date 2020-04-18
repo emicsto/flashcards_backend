@@ -30,6 +30,11 @@ class FlashcardController {
         return ResponseEntity.ok(flashcardApi.save(flashcard, SecurityUtils.getCurrentUser()));
     }
 
+    @PutMapping("/flashcards")
+    public ResponseEntity<FlashcardDto> update(@Valid @RequestBody FlashcardDto flashcard) {
+        return ResponseEntity.ok(flashcardApi.update(flashcard));
+    }
+
     @PostMapping("/decks/{deckId}/flashcards/import")
     public ResponseEntity<String> importFlashcards(@PathVariable String deckId, @RequestBody FlashcardsCsv flashcards) {
         flashcardApi.importFlashcards(deckId, flashcards.getFlashcards());
