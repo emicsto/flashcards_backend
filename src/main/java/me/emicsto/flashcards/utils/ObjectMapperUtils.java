@@ -1,22 +1,19 @@
 package me.emicsto.flashcards.utils;
 
+import lombok.NoArgsConstructor;
 import org.modelmapper.ModelMapper;
-import org.modelmapper.convention.MatchingStrategies;
 
 import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@NoArgsConstructor
 public class ObjectMapperUtils {
 
-    private static ModelMapper modelMapper;
+    private static final ModelMapper modelMapper;
 
     static {
         modelMapper = new ModelMapper();
-        modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
-    }
-
-    private ObjectMapperUtils() {
     }
 
     public static <D, T> D map(final T entity, Class<D> outClass) {
