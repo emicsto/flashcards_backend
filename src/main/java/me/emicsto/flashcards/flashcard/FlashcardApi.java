@@ -32,7 +32,7 @@ public class FlashcardApi {
         flashcardService.delete(id);
     }
 
-    public FlashcardDto update(FlashcardDto flashcardDto) {
-        return flashcardService.update(flashcardDto);
+    public FlashcardDto update(FlashcardDto flashcardDto, User currentUser) {
+        return flashcardService.update(flashcardDto, currentUser);
     }
 }

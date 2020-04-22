@@ -45,11 +45,25 @@ class FlashcardService {
     }
 
 
-    FlashcardDto update(FlashcardDto flashcardDto) {
+    FlashcardDto update(FlashcardDto flashcardDto, User user) {
         Flashcard flashcard = findById(flashcardDto.getId());
+        Deck deck = deckApi.findById(flashcardDto.getDeckId());
+
+        if(!flashcardDto.getDeckId().equals(flashcard.getDeck().getId())) {
+            Deck oldDeck = deckApi.findById(flashcard.getDeck().getId());
+            oldDeck.getFlashcards().remove(flashcard);
+            deckApi.save(oldDeck, user);
+        }
+
         flashcard.setFront(flashcardDto.getFront());
         flashcard.setBack(flashcardDto.getBack());
-        return ObjectMapperUtils.map(flashcardRepository.save(flashcard), FlashcardDto.class);
+        flashcard.setDeck(deck);
+        flashcardRepository.save(flashcard);
+
+        deck.getFlashcards().add(flashcard);
+        deckApi.save(deck, user);
+
+        return ObjectMapperUtils.map(flashcard, FlashcardDto.class);
     }
 
     void importFlashcards(String deckId, String flashcardsCsv) {

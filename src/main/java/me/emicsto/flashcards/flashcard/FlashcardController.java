@@ -32,7 +32,7 @@ class FlashcardController {
 
     @PutMapping("/flashcards")
     public ResponseEntity<FlashcardDto> update(@Valid @RequestBody FlashcardDto flashcard) {
-        return ResponseEntity.ok(flashcardApi.update(flashcard));
+        return ResponseEntity.ok(flashcardApi.update(flashcard, SecurityUtils.getCurrentUser()));
     }
 
     @PostMapping("/decks/{deckId}/flashcards/import")
