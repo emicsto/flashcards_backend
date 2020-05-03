@@ -12,4 +12,8 @@ public interface DeckRepository extends MongoRepository<Deck, String> {
     @Override
     @PreAuthorize("#deck.user.id == authentication.principal.id")
     void delete(Deck deck);
+
+    @Override
+    @PreAuthorize("#deck.user.id == authentication.principal.id")
+    <S extends Deck> S save(S deck);
 }

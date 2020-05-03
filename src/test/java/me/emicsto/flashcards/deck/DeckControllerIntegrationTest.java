@@ -3,6 +3,7 @@ package me.emicsto.flashcards.deck;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import me.emicsto.flashcards.user.User;
 import me.emicsto.flashcards.user.UserRepository;
+import me.emicsto.flashcards.utils.ObjectMapperUtils;
 import me.emicsto.flashcards.utils.WithMockCustomUser;
 import org.apache.http.HttpStatus;
 import org.junit.jupiter.api.AfterEach;
@@ -17,8 +18,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
@@ -103,7 +103,7 @@ class DeckControllerIntegrationTest {
     }
 
     @Test
-    void deleteSeomeonesDeckAttempt_shouldReturnForbidden() throws Exception {
+    void deleteSomeonesDeckAttempt_shouldReturnForbidden() throws Exception {
         Deck deck = new Deck();
         deck.setName("test_deck");
         deck.setUser(new User());
@@ -112,5 +112,30 @@ class DeckControllerIntegrationTest {
         mockMvc.perform(delete("/api/decks/" + savedDeck.getId())
                 .contentType("application/json"))
                 .andExpect(status().is(HttpStatus.SC_FORBIDDEN));
+    }
+
+
+    @Test
+    void shouldUpdateDeck() throws Exception {
+        Deck deck = Deck.builder()
+                .id("1")
+                .name("deck_name")
+                .user(user)
+                .build();
+
+        deckRepository.save(deck);
+
+        DeckDto deckDto = ObjectMapperUtils.map(deck, DeckDto.class);
+        deckDto.setName("deck_name_updated");
+
+        mockMvc.perform(put("/api/decks")
+                .contentType("application/json")
+                .content(objectMapper.writeValueAsString(deckDto)))
+                .andExpect(status().isOk());
+
+        List<Deck> decks = deckRepository.findAll();
+
+        assertThat(decks).hasSize(1);
+        assertThat(decks.get(0).getName()).isEqualTo("deck_name_updated");
     }
 }

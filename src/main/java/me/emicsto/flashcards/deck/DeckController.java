@@ -24,6 +24,11 @@ class DeckController {
         return ResponseEntity.ok(deckApi.save(deck, SecurityUtils.getCurrentUser()));
     }
 
+    @PutMapping
+    public ResponseEntity<DeckDto> update(@Valid @RequestBody DeckDto deck) {
+        return ResponseEntity.ok(deckApi.update(deck));
+    }
+
     @DeleteMapping("/{id}")
     public ResponseEntity<String> delete(@PathVariable String id) {
         deckApi.delete(id);

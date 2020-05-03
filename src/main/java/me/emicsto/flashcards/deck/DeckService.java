@@ -45,4 +45,10 @@ class DeckService {
         Deck deck = findById(id);
         deckRepository.delete(deck);
     }
+
+    DeckDto update(DeckDto deckDto) {
+        Deck deck = findById(deckDto.getId());
+        deck.setName(deckDto.getName());
+        return ObjectMapperUtils.map(deckRepository.save(deck), DeckDto.class);
+    }
 }

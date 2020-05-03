@@ -30,4 +30,8 @@ public class DeckApi {
     public void delete(String id) {
         deckService.delete(id);
     }
+
+    public DeckDto update(DeckDto deck) {
+        return deckService.update(deck);
+    }
 }
