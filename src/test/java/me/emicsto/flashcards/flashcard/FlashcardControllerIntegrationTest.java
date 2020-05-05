@@ -13,6 +13,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.test.web.servlet.MockMvc;
 
@@ -22,7 +23,6 @@ import java.util.List;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasSize;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -132,13 +132,60 @@ class FlashcardControllerIntegrationTest {
                 .content(objectMapper.writeValueAsString(flashcardDto)))
                 .andExpect(status().isOk());
 
-        List<Flashcard> flashcards = flashcardRepository.findAll();
+        List<Flashcard> flashcards = flashcardRepository.findAllByDeckIdAndUser(deck.getId(), user, Pageable.unpaged());
 
         assertThat(flashcards).hasSize(1);
         assertThat(flashcards.get(0).getFront()).isEqualTo("front_updated");
         assertThat(flashcards.get(0).getBack()).isEqualTo("back_updated");
         assertThat(flashcards.get(0).getDeck().getId()).isEqualTo("1");
         assertThat(flashcards.get(0).getDeck().getName()).isEqualTo("deck");
+        assertThat(flashcards.get(0).getUser().getName()).isEqualTo("name");
+    }
+
+    @Test
+    void shouldChangeFlashcardDeck() throws Exception {
+        Deck sourceDeck = Deck.builder()
+                .id("1")
+                .user(user)
+                .name("sourceDeck")
+                .build();
+
+        Deck destinationDeck = Deck.builder()
+                .id("2")
+                .user(user)
+                .name("destinationDeck")
+                .build();
+
+        deckRepository.saveAll(Arrays.asList(sourceDeck, destinationDeck));
+
+        Flashcard flashcard = Flashcard.builder()
+                .front("front")
+                .back("back")
+                .user(user)
+                .deck(sourceDeck)
+                .build();
+
+        Flashcard savedFlashcard = flashcardRepository.save(flashcard);
+
+        FlashcardDto flashcardDto = FlashcardDto.builder()
+                .id(savedFlashcard.getId())
+                .deckId("2")
+                .front("front")
+                .back("back")
+                .build();
+
+        mockMvc.perform(put("/api/flashcards")
+                .contentType("application/json")
+                .content(objectMapper.writeValueAsString(flashcardDto)))
+                .andExpect(status().isOk());
+
+        List<Flashcard> flashcards = flashcardRepository.findAllByDeckIdAndUser(destinationDeck.getId(), user, Pageable.unpaged());
+
+        assertThat(flashcards).hasSize(1);
+        assertThat(flashcards.get(0).getFront()).isEqualTo("front");
+        assertThat(flashcards.get(0).getBack()).isEqualTo("back");
+        assertThat(flashcards.get(0).getDeck().getId()).isEqualTo("2");
+        assertThat(flashcards.get(0).getDeck().getName()).isEqualTo("destinationDeck");
         assertThat(flashcards.get(0).getUser().getName()).isEqualTo("name");
     }
 
