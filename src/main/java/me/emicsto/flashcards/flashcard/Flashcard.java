@@ -20,4 +20,5 @@ public class Flashcard {
     private String back;
     private User user;
     private Deck deck;
+    private Estimate estimate;
 }

@@ -35,4 +35,8 @@ public class FlashcardApi {
     public FlashcardDto update(FlashcardDto flashcardDto, User currentUser) {
         return flashcardService.update(flashcardDto, currentUser);
     }
+
+    public FlashcardDto estimate(String id, Estimate estimate, User currentUser) {
+        return flashcardService.estimate(id, estimate, currentUser);
+    }
 }

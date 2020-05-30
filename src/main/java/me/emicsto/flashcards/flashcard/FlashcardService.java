@@ -45,6 +45,20 @@ class FlashcardService {
     }
 
 
+    FlashcardDto save(String id, User user) {
+        Flashcard flashcard = findById(id);
+        Deck deck = deckApi.findById(id);
+
+        Flashcard savedFlashcard = flashcardRepository.save(flashcard);
+
+        deck.getFlashcards().add(savedFlashcard);
+        deckApi.save(deck, user);
+
+        return ObjectMapperUtils.map(savedFlashcard, FlashcardDto.class);
+    }
+
+
+
     FlashcardDto update(FlashcardDto flashcardDto, User user) {
         Flashcard flashcard = findById(flashcardDto.getId());
         Deck deck = deckApi.findById(flashcardDto.getDeckId());
@@ -91,5 +105,11 @@ class FlashcardService {
     void delete(String id) {
         Flashcard flashcard = findById(id);
         flashcardRepository.delete(flashcard);
+    }
+
+    public FlashcardDto estimate(String id, Estimate estimate, User user) {
+        Flashcard flashcard = findById(id);
+        flashcard.setEstimate(estimate);
+        return ObjectMapperUtils.map(save(id, user), FlashcardDto.class);
     }
 }

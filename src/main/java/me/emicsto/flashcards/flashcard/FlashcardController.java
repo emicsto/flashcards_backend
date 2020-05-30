@@ -46,4 +46,9 @@ class FlashcardController {
         flashcardApi.delete(id);
         return ResponseEntity.ok("");
     }
+
+    @PostMapping("/flashcards/{id}/estimates")
+    public ResponseEntity<FlashcardDto> rate(@PathVariable String id, @RequestBody FlashcardEstimateDto flashcardEstimateDto) {
+        return ResponseEntity.ok(flashcardApi.estimate(id, flashcardEstimateDto.getEstimate(), SecurityUtils.getCurrentUser()));
+    }
 }
