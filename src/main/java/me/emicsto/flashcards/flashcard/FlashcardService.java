@@ -45,9 +45,8 @@ class FlashcardService {
     }
 
 
-    FlashcardDto save(String id, User user) {
-        Flashcard flashcard = findById(id);
-        Deck deck = deckApi.findById(id);
+    FlashcardDto save(Flashcard flashcard, User user) {
+        Deck deck = flashcard.getDeck();
 
         Flashcard savedFlashcard = flashcardRepository.save(flashcard);
 
@@ -110,6 +109,6 @@ class FlashcardService {
     public FlashcardDto estimate(String id, Estimate estimate, User user) {
         Flashcard flashcard = findById(id);
         flashcard.setEstimate(estimate);
-        return ObjectMapperUtils.map(save(id, user), FlashcardDto.class);
+        return ObjectMapperUtils.map(save(flashcard, user), FlashcardDto.class);
     }
 }

@@ -289,4 +289,39 @@ class FlashcardControllerIntegrationTest {
 
         assertThat(flashcards).hasSize(0);
     }
+
+
+    @Test
+    void shouldEstimateFlashcard() throws Exception {
+        String deckId = "1";
+        Deck deck = Deck.builder()
+                .id(deckId)
+                .user(user)
+                .name("deck")
+                .build();
+
+        deckRepository.save(deck);
+
+        Flashcard flashcard = Flashcard.builder()
+                .id("test_id_1")
+                .front("test_front")
+                .back("test_back")
+                .user(user)
+                .deck(deck)
+                .build();
+
+       flashcardRepository.save(flashcard);
+
+
+        mockMvc.perform(post("/api/flashcards/test_id_1/estimates")
+                .content(objectMapper.writeValueAsString(new FlashcardEstimateDto(Estimate.AGAIN)))
+                .contentType("application/json"))
+                .andExpect(status().isOk());
+
+        List<Flashcard> flashcards = flashcardRepository.findAll();
+
+        assertThat(flashcards).hasSize(1);
+        assertThat(flashcards.get(0).getId()).isEqualTo("test_id_1");
+        assertThat(flashcards.get(0).getEstimate()).isEqualTo(Estimate.AGAIN);
+    }
 }

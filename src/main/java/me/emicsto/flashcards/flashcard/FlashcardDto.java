@@ -16,4 +16,5 @@ public class FlashcardDto {
     @NotEmpty
     private String back;
     private String deckId;
+    private Estimate estimate;
 }
