@@ -49,7 +49,7 @@ class DeckControllerIntegrationTest {
         mongoTemplate.dropCollection(User.class);
 
         user = new User();
-        user.setName("mame");
+        user.setName("name");
         user.setId("1");
         userRepository.save(user);
     }

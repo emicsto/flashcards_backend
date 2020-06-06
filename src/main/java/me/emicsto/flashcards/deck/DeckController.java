@@ -3,6 +3,7 @@ package me.emicsto.flashcards.deck;
 import lombok.AllArgsConstructor;
 import me.emicsto.flashcards.security.SecurityUtils;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -25,11 +26,13 @@ class DeckController {
     }
 
     @PutMapping
+    @PreAuthorize("@AuthorizationComponent.isDeckOwner(#deck.id, principal)")
     public ResponseEntity<DeckDto> update(@Valid @RequestBody DeckDto deck) {
         return ResponseEntity.ok(deckApi.update(deck));
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("@AuthorizationComponent.isDeckOwner(#id, principal)")
     public ResponseEntity<String> delete(@PathVariable String id) {
         deckApi.delete(id);
         return ResponseEntity.ok("");

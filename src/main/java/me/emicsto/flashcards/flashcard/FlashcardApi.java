@@ -39,4 +39,8 @@ public class FlashcardApi {
     public FlashcardDto estimate(String id, Estimate estimate, User currentUser) {
         return flashcardService.estimate(id, estimate, currentUser);
     }
+
+    public Flashcard findById(String id) {
+        return flashcardService.get(id);
+    }
 }

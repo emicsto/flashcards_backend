@@ -59,7 +59,7 @@ class FlashcardService {
 
 
     FlashcardDto update(FlashcardDto flashcardDto, User user) {
-        Flashcard flashcard = findById(flashcardDto.getId());
+        Flashcard flashcard = get(flashcardDto.getId());
         Deck deck = deckApi.findById(flashcardDto.getDeckId());
 
         if(!flashcardDto.getDeckId().equals(flashcard.getDeck().getId())) {
@@ -97,17 +97,17 @@ class FlashcardService {
         deckApi.save(deck, user);
     }
 
-    Flashcard findById(String id) {
+    Flashcard get(String id) {
         return flashcardRepository.findById(id).orElseThrow(FlashcardNotFoundException::new);
     }
 
     void delete(String id) {
-        Flashcard flashcard = findById(id);
+        Flashcard flashcard = get(id);
         flashcardRepository.delete(flashcard);
     }
 
     public FlashcardDto estimate(String id, Estimate estimate, User user) {
-        Flashcard flashcard = findById(id);
+        Flashcard flashcard = get(id);
         flashcard.setEstimate(estimate);
         return ObjectMapperUtils.map(save(flashcard, user), FlashcardDto.class);
     }
