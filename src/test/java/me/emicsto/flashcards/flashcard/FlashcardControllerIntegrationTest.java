@@ -32,6 +32,25 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @WithMockCustomUser
 class FlashcardControllerIntegrationTest {
 
+    private static final String DECK_ID_1 = "deck_id_1";
+    private static final String DECK_NAME = "deck";
+    private static final String FRONT = "front";
+    private static final String BACK = "back";
+    private static final String FRONT_UPDATED = "front_updated";
+    private static final String BACK_UPDATED = "back_updated";
+    private static final String SOURCE_DECK = "source_Deck";
+    private static final String DESTINATION_DECK = "destination_deck";
+    private static final String FRONT_2 = "front_2";
+    private static final String BACK_2 = "back_2";
+    private static final String FRONT_3 = "front_3";
+    private static final String BACK_3 = "back_3";
+    private static final String DECK_ID_2 = "deck_id_2";
+    private static final String FLASHCARD_ID_1 = "flashcard_id_1";
+    private static final String FLASHCARD_ID_2 = "flashcard_id_2";
+    private static final String FLASHCARD_ID_3 = "flashcard_id_3";
+    private static final String USER_NAME = "user_name";
+    private static final String USER_ID = "user_id_1";
+
     @Autowired
     private MockMvc mockMvc;
 
@@ -58,8 +77,8 @@ class FlashcardControllerIntegrationTest {
         mongoTemplate.dropCollection(User.class);
         mongoTemplate.dropCollection(Flashcard.class);
 
-        user.setName("name");
-        user.setId("1");
+        user.setName(USER_NAME);
+        user.setId(USER_ID);
         userRepository.save(user);
     }
 
@@ -73,17 +92,17 @@ class FlashcardControllerIntegrationTest {
     @Test
     void shouldSaveFlashcard() throws Exception {
         Deck deck = Deck.builder()
-                .id("1")
+                .id(DECK_ID_1)
                 .user(user)
-                .name("deck")
+                .name(DECK_NAME)
                 .build();
 
         deckRepository.save(deck);
 
         FlashcardDto flashcardDto = FlashcardDto.builder()
-                .deckId("1")
-                .front("front")
-                .back("back")
+                .deckId(DECK_ID_1)
+                .front(FRONT)
+                .back(BACK)
                 .build();
 
         mockMvc.perform(post("/api/flashcards")
@@ -94,26 +113,26 @@ class FlashcardControllerIntegrationTest {
         List<Flashcard> flashcards = flashcardRepository.findAll();
 
         assertThat(flashcards).hasSize(1);
-        assertThat(flashcards.get(0).getFront()).isEqualTo("front");
-        assertThat(flashcards.get(0).getBack()).isEqualTo("back");
-        assertThat(flashcards.get(0).getDeck().getId()).isEqualTo("1");
-        assertThat(flashcards.get(0).getDeck().getName()).isEqualTo("deck");
-        assertThat(flashcards.get(0).getUser().getName()).isEqualTo("name");
+        assertThat(flashcards.get(0).getFront()).isEqualTo(FRONT);
+        assertThat(flashcards.get(0).getBack()).isEqualTo(BACK);
+        assertThat(flashcards.get(0).getDeck().getId()).isEqualTo(DECK_ID_1);
+        assertThat(flashcards.get(0).getDeck().getName()).isEqualTo(DECK_NAME);
+        assertThat(flashcards.get(0).getUser().getName()).isEqualTo(USER_NAME);
     }
 
     @Test
     void shouldUpdateFlashcard() throws Exception {
         Deck deck = Deck.builder()
-                .id("1")
+                .id(DECK_ID_1)
                 .user(user)
-                .name("deck")
+                .name(DECK_NAME)
                 .build();
 
         deckRepository.save(deck);
 
         Flashcard flashcard = Flashcard.builder()
-                .front("front")
-                .back("back")
+                .front(FRONT)
+                .back(BACK)
                 .user(user)
                 .deck(deck)
                 .build();
@@ -122,9 +141,9 @@ class FlashcardControllerIntegrationTest {
 
         FlashcardDto flashcardDto = FlashcardDto.builder()
                 .id(savedFlashcard.getId())
-                .deckId("1")
-                .front("front_updated")
-                .back("back_updated")
+                .deckId(DECK_ID_1)
+                .front(FRONT_UPDATED)
+                .back(BACK_UPDATED)
                 .build();
 
         mockMvc.perform(put("/api/flashcards")
@@ -135,32 +154,32 @@ class FlashcardControllerIntegrationTest {
         List<Flashcard> flashcards = flashcardRepository.findAllByDeckIdAndUser(deck.getId(), user, Pageable.unpaged());
 
         assertThat(flashcards).hasSize(1);
-        assertThat(flashcards.get(0).getFront()).isEqualTo("front_updated");
-        assertThat(flashcards.get(0).getBack()).isEqualTo("back_updated");
-        assertThat(flashcards.get(0).getDeck().getId()).isEqualTo("1");
-        assertThat(flashcards.get(0).getDeck().getName()).isEqualTo("deck");
-        assertThat(flashcards.get(0).getUser().getName()).isEqualTo("name");
+        assertThat(flashcards.get(0).getFront()).isEqualTo(FRONT_UPDATED);
+        assertThat(flashcards.get(0).getBack()).isEqualTo(BACK_UPDATED);
+        assertThat(flashcards.get(0).getDeck().getId()).isEqualTo(DECK_ID_1);
+        assertThat(flashcards.get(0).getDeck().getName()).isEqualTo(DECK_NAME);
+        assertThat(flashcards.get(0).getUser().getName()).isEqualTo(USER_NAME);
     }
 
     @Test
     void shouldChangeFlashcardDeck() throws Exception {
         Deck sourceDeck = Deck.builder()
-                .id("1")
+                .id(DECK_ID_1)
                 .user(user)
-                .name("sourceDeck")
+                .name(SOURCE_DECK)
                 .build();
 
         Deck destinationDeck = Deck.builder()
-                .id("2")
+                .id(DECK_ID_2)
                 .user(user)
-                .name("destinationDeck")
+                .name(DESTINATION_DECK)
                 .build();
 
         deckRepository.saveAll(Arrays.asList(sourceDeck, destinationDeck));
 
         Flashcard flashcard = Flashcard.builder()
-                .front("front")
-                .back("back")
+                .front(FRONT)
+                .back(BACK)
                 .user(user)
                 .deck(sourceDeck)
                 .build();
@@ -169,9 +188,9 @@ class FlashcardControllerIntegrationTest {
 
         FlashcardDto flashcardDto = FlashcardDto.builder()
                 .id(savedFlashcard.getId())
-                .deckId("2")
-                .front("front")
-                .back("back")
+                .deckId(DECK_ID_2)
+                .front(FRONT)
+                .back(BACK)
                 .build();
 
         mockMvc.perform(put("/api/flashcards")
@@ -182,27 +201,27 @@ class FlashcardControllerIntegrationTest {
         List<Flashcard> flashcards = flashcardRepository.findAllByDeckIdAndUser(destinationDeck.getId(), user, Pageable.unpaged());
 
         assertThat(flashcards).hasSize(1);
-        assertThat(flashcards.get(0).getFront()).isEqualTo("front");
-        assertThat(flashcards.get(0).getBack()).isEqualTo("back");
-        assertThat(flashcards.get(0).getDeck().getId()).isEqualTo("2");
-        assertThat(flashcards.get(0).getDeck().getName()).isEqualTo("destinationDeck");
-        assertThat(flashcards.get(0).getUser().getName()).isEqualTo("name");
+        assertThat(flashcards.get(0).getFront()).isEqualTo(FRONT);
+        assertThat(flashcards.get(0).getBack()).isEqualTo(BACK);
+        assertThat(flashcards.get(0).getDeck().getId()).isEqualTo(DECK_ID_2);
+        assertThat(flashcards.get(0).getDeck().getName()).isEqualTo(DESTINATION_DECK);
+        assertThat(flashcards.get(0).getUser().getName()).isEqualTo(USER_NAME);
     }
 
     @Test
     void addFlashcardToSomeonesDeck_shouldReturnForbidden() throws Exception {
         Deck deck = Deck.builder()
-                .id("1")
+                .id(DECK_ID_1)
                 .user(new User())
-                .name("deck")
+                .name(DECK_NAME)
                 .build();
 
         deckRepository.save(deck);
 
         FlashcardDto flashcardDto = FlashcardDto.builder()
-                .deckId("1")
-                .front("front")
-                .back("back")
+                .deckId(DECK_ID_1)
+                .front(FRONT)
+                .back(BACK)
                 .build();
 
         mockMvc.perform(post("/api/flashcards")
@@ -213,68 +232,66 @@ class FlashcardControllerIntegrationTest {
 
     @Test
     void shouldReturnUserFlashcards() throws Exception {
-        String deckId = "1";
         Deck deck = Deck.builder()
-                .id(deckId)
+                .id(DECK_ID_1)
                 .user(user)
-                .name("deck")
+                .name(DECK_NAME)
                 .build();
 
         deckRepository.save(deck);
 
         Flashcard flashcard1 = Flashcard.builder()
-                .id("1")
+                .id(FLASHCARD_ID_1)
                 .deck(deck)
-                .front("front1")
-                .back("back1")
+                .front(FRONT)
+                .back(BACK)
                 .user(user)
                 .build();
 
         Flashcard flashcard2 = Flashcard.builder()
-                .id("2")
+                .id(FLASHCARD_ID_2)
                 .deck(deck)
-                .front("front2")
-                .back("back2")
+                .front(FRONT_2)
+                .back(BACK_2)
                 .user(user)
                 .build();
 
         Flashcard flashcard3 = Flashcard.builder()
-                .id("3")
+                .id(FLASHCARD_ID_3)
                 .deck(deck)
-                .front("front3")
-                .back("back3")
+                .front(FRONT_3)
+                .back(BACK_3)
                 .user(new User())
                 .build();
 
         flashcardRepository.saveAll(Arrays.asList(flashcard1, flashcard2, flashcard3));
 
-        mockMvc.perform(get("/api/decks/" + deckId + "/flashcards")
+        mockMvc.perform(get("/api/decks/" + DECK_ID_1 + "/flashcards")
                 .contentType("application/json"))
                 .andDo(print())
                 .andExpect(jsonPath("$", hasSize(2)))
-                .andExpect(jsonPath("$[0].id").value("1"))
-                .andExpect(jsonPath("$[0].front").value("front1"))
-                .andExpect(jsonPath("$[0].back").value("back1"))
-                .andExpect(jsonPath("$[1].id").value("2"))
-                .andExpect(jsonPath("$[1].front").value("front2"))
-                .andExpect(jsonPath("$[1].back").value("back2"))
+                .andExpect(jsonPath("$[0].id").value(FLASHCARD_ID_1))
+                .andExpect(jsonPath("$[0].front").value(FRONT))
+                .andExpect(jsonPath("$[0].back").value(BACK))
+                .andExpect(jsonPath("$[1].id").value(FLASHCARD_ID_2))
+                .andExpect(jsonPath("$[1].front").value(FRONT_2))
+                .andExpect(jsonPath("$[1].back").value(BACK_2))
                 .andExpect(status().isOk());
     }
 
     @Test
     void shouldDeleteFlashcard() throws Exception {
-        String deckId = "1";
         Deck deck = Deck.builder()
-                .id(deckId)
+                .id(DECK_ID_1)
                 .user(user)
-                .name("deck")
+                .name(DECK_NAME)
                 .build();
 
         deckRepository.save(deck);
 
         Flashcard flashcard = Flashcard.builder()
-                .front("test_front")
-                .back("test_back")
+                .front(FRONT)
+                .back(BACK)
                 .user(user)
                 .deck(deck)
                 .build();
@@ -293,26 +310,25 @@ class FlashcardControllerIntegrationTest {
 
     @Test
     void shouldEstimateFlashcard() throws Exception {
-        String deckId = "1";
         Deck deck = Deck.builder()
-                .id(deckId)
+                .id(DECK_ID_1)
                 .user(user)
-                .name("deck")
+                .name(DECK_NAME)
                 .build();
 
         deckRepository.save(deck);
 
         Flashcard flashcard = Flashcard.builder()
-                .id("test_id_1")
-                .front("test_front")
-                .back("test_back")
+                .id(FLASHCARD_ID_1)
+                .front(FRONT)
+                .back(BACK)
                 .user(user)
                 .deck(deck)
                 .build();
 
        flashcardRepository.save(flashcard);
 
-        mockMvc.perform(post("/api/flashcards/test_id_1/estimates")
+        mockMvc.perform(post("/api/flashcards/"+FLASHCARD_ID_1+"/estimates")
                 .content(objectMapper.writeValueAsString(new FlashcardEstimateDto(Estimate.AGAIN)))
                 .contentType("application/json"))
                 .andExpect(status().isOk());
@@ -320,25 +336,24 @@ class FlashcardControllerIntegrationTest {
         List<Flashcard> flashcards = flashcardRepository.findAll();
 
         assertThat(flashcards).hasSize(1);
-        assertThat(flashcards.get(0).getId()).isEqualTo("test_id_1");
+        assertThat(flashcards.get(0).getId()).isEqualTo(FLASHCARD_ID_1);
         assertThat(flashcards.get(0).getEstimate()).isEqualTo(Estimate.AGAIN);
     }
 
     @Test
     void shouldOverwriteOldEstimate() throws Exception {
-        String deckId = "1";
         Deck deck = Deck.builder()
-                .id(deckId)
+                .id(DECK_ID_1)
                 .user(user)
-                .name("deck")
+                .name(DECK_NAME)
                 .build();
 
         deckRepository.save(deck);
 
         Flashcard flashcard = Flashcard.builder()
-                .id("test_id_1")
-                .front("test_front")
-                .back("test_back")
+                .id(FLASHCARD_ID_1)
+                .front(FRONT)
+                .back(BACK)
                 .user(user)
                 .deck(deck)
                 .estimate(Estimate.HARD)
@@ -346,7 +361,7 @@ class FlashcardControllerIntegrationTest {
 
        flashcardRepository.save(flashcard);
 
-        mockMvc.perform(post("/api/flashcards/test_id_1/estimates")
+        mockMvc.perform(post("/api/flashcards/"+FLASHCARD_ID_1+"/estimates")
                 .content(objectMapper.writeValueAsString(new FlashcardEstimateDto(Estimate.GOOD)))
                 .contentType("application/json"))
                 .andExpect(status().isOk());
@@ -354,7 +369,7 @@ class FlashcardControllerIntegrationTest {
         List<Flashcard> flashcards = flashcardRepository.findAll();
 
         assertThat(flashcards).hasSize(1);
-        assertThat(flashcards.get(0).getId()).isEqualTo("test_id_1");
+        assertThat(flashcards.get(0).getId()).isEqualTo(FLASHCARD_ID_1);
         assertThat(flashcards.get(0).getEstimate()).isEqualTo(Estimate.GOOD);
     }
 }

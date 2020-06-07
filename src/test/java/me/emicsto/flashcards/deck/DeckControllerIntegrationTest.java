@@ -26,6 +26,11 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @WithMockCustomUser
 class DeckControllerIntegrationTest {
 
+    private static final String DECK_NAME = "deck";
+    private static final String DECK_NAME_UPDATED = "deck_name_updated";
+    private static final String USER_NAME = "user_name";
+    private static final String USER_ID = "user_id_1";
+
     @Autowired
     private MockMvc mockMvc;
 
@@ -49,8 +54,8 @@ class DeckControllerIntegrationTest {
         mongoTemplate.dropCollection(User.class);
 
         user = new User();
-        user.setName("name");
-        user.setId("1");
+        user.setName(USER_NAME);
+        user.setId(USER_ID);
         userRepository.save(user);
     }
 
@@ -63,7 +68,7 @@ class DeckControllerIntegrationTest {
     @Test
     void shouldSaveDeck() throws Exception {
         DeckDto deckDto = new DeckDto();
-        deckDto.setName("deck");
+        deckDto.setName(DECK_NAME);
 
         mockMvc.perform(post("/api/decks")
                 .contentType("application/json")
@@ -73,7 +78,7 @@ class DeckControllerIntegrationTest {
         List<Deck> decks = deckRepository.findAll();
 
         assertThat(decks).hasSize(1);
-        assertThat(decks.get(0).getName()).isEqualTo("deck");
+        assertThat(decks.get(0).getName()).isEqualTo(DECK_NAME);
     }
 
     @Test
@@ -89,7 +94,7 @@ class DeckControllerIntegrationTest {
     @Test
     void shouldDeleteDeck() throws Exception {
         Deck deck = new Deck();
-        deck.setName("test_deck");
+        deck.setName(DECK_NAME);
         deck.setUser(user);
         Deck savedDeck = deckRepository.save(deck);
 
@@ -105,7 +110,7 @@ class DeckControllerIntegrationTest {
     @Test
     void deleteSomeonesDeckAttempt_shouldReturnForbidden() throws Exception {
         Deck deck = new Deck();
-        deck.setName("test_deck");
+        deck.setName(DECK_NAME);
         deck.setUser(new User());
         Deck savedDeck = deckRepository.save(deck);
 
@@ -119,14 +124,14 @@ class DeckControllerIntegrationTest {
     void shouldUpdateDeck() throws Exception {
         Deck deck = Deck.builder()
                 .id("1")
-                .name("deck_name")
+                .name(DECK_NAME)
                 .user(user)
                 .build();
 
         deckRepository.save(deck);
 
         DeckDto deckDto = ObjectMapperUtils.map(deck, DeckDto.class);
-        deckDto.setName("deck_name_updated");
+        deckDto.setName(DECK_NAME_UPDATED);
 
         mockMvc.perform(put("/api/decks")
                 .contentType("application/json")
@@ -136,6 +141,6 @@ class DeckControllerIntegrationTest {
         List<Deck> decks = deckRepository.findAll();
 
         assertThat(decks).hasSize(1);
-        assertThat(decks.get(0).getName()).isEqualTo("deck_name_updated");
+        assertThat(decks.get(0).getName()).isEqualTo(DECK_NAME_UPDATED);
     }
 }
