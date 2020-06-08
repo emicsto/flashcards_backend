@@ -13,6 +13,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.io.StringReader;
+import java.util.Collections;
 import java.util.List;
 
 @Service
@@ -22,11 +23,15 @@ class FlashcardService {
     private final DeckApi deckApi;
 
     List<FlashcardDto> findAllByUser(User user) {
-        return ObjectMapperUtils.mapAll(flashcardRepository.findAllByUser(user), FlashcardDto.class);
+        List<Flashcard> flashcards = flashcardRepository.findAllByUser(user);
+        Collections.shuffle(flashcards);
+        return ObjectMapperUtils.mapAll(flashcards, FlashcardDto.class);
     }
 
     List<FlashcardDto> findAllByDeckIdAndUser(String id, User user, Pageable pageable) {
-        return ObjectMapperUtils.mapAll(flashcardRepository.findAllByDeckIdAndUser(id, user, pageable), FlashcardDto.class);
+        List<Flashcard> flashcards = flashcardRepository.findAllByDeckIdAndUser(id, user, pageable);
+        Collections.shuffle(flashcards);
+        return ObjectMapperUtils.mapAll(flashcards, FlashcardDto.class);
     }
 
     FlashcardDto save(FlashcardDto flashcardDto, User user) {
